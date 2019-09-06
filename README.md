@@ -7,9 +7,6 @@ This project contains some **Golang** sample codes.
 
 ## sample package
 
-## &#1989; buffer
-   - bufio pkg
-
 ## &#1989; bytes pkg
    - bytes 字符串处理
    - bytes.Buffer
@@ -27,6 +24,9 @@ This project contains some **Golang** sample codes.
    - list 双向链表
    - heap 堆
    - ring 环形链表
+
+## &#1989; buffer
+   - bufio pkg
 
 ## &#1989; net/http pkg
    - http Client

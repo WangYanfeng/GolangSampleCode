@@ -28,6 +28,8 @@ package sample
 * rpc.HandleHTTP()
 *
 * rpc.DialHTTP()
+*
+* Gob 是Go语言自己的以二进制形式序列化和反序列化数据格式。用于rpc、以及应用程序返回的数据通信。
 * */
 
 import (

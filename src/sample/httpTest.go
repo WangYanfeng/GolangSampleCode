@@ -78,6 +78,10 @@ type timeHandler struct {
 
 func (th *timeHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	tm := time.Now().Format(th.format)
+	
+	w.Header().Set("name","For Test")
+	w.WriteHeader(500)
+
 	w.Write([]byte("The time is: " + tm))
 }
 

@@ -16,7 +16,7 @@ import "fmt"
 const NUM = 10
 
 func init() {
-	fmt.Println("call samplecode package init func")
+	fmt.Println("> sample package init")
 }
 
 // VariablesTest test
