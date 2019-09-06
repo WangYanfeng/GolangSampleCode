@@ -35,6 +35,7 @@ package sample
  * 			Truncate()
  *    读
  * 			ReadBytes() / ReadString() / Next()
+ * 			ReadFrom(reader)
  *    写
  * 			WriteString() / WriteRune()
  * 3. bytes.Reader

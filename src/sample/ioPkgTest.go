@@ -1,14 +1,23 @@
 package sample
 
 /**
- * 1. bufio : 带缓存的I/O操作
+ * 1. io 为I/O原语提供基础接口，并“封装”了这些原语的已有实现。io包是其他io Reader/Writer的封装
+ * 		io.ReadAtLeast(reader, buf, int) / io.ReadFull(reader, buf)
+ * 		io.LimitReader(reader, n) 从reader中读取n个字节数据，读取后返回EOF。覆盖reader的Read方法
+ * 		io.TeeReader(reader, writer) 从reader中读取数据时，自动向w中写入数据
+ * 		io.WriteString(writer, string)
+ * 		io.Copy(dstWriter, srcReader) 从src中复制数据到dst中，直到所有数据复制完毕
+ * 		io.CopyN(dstWriter, srcReader, n)
+ *
+ * 2. bufio : 带缓存的I/O操作
  * 		bufio Reader
  * 			bufio.NewReader(reader) / bufio.NewReaderSize(reader, size)
  * 			r.Read(b []byte) 读取数据到b中，返回长度
- * 			r.ReadLine(delim byte) / ReadString() / ReadSlice() ReadBytes() / ReadRune() 在r中查找delim，返回delim以及之前的所有数据
+ * 			r.ReadLine(delim byte) / ReadString() / ReadAt() / ReadSlice() ReadBytes() / ReadRune() 在r中查找delim，返回delim以及之前的所有数据
  * 			r.Reset() / Discard()
  * 			r.Peek(n) 返回buffer中前n个字节的切片
  * 			r.Buffered() 缓存中数据长度
+ * 			r.WriteTo(writer)
  * 		bufio Writer
  * 			bufio.NewWriter(writer) / bufio.NewWriterSize(writer, size)
  * 			w.Flush()
@@ -24,7 +33,6 @@ package sample
  * 			reader.Split()
  * 			reader.Text() / reader.Bytes() / reader.Buffer()
  * 			reader.Split() 自定义分割函数
- * 2. io
  * 3. ioutil
  * 4. strings
  * 5. bytes
@@ -35,10 +43,22 @@ package sample
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 )
+
+func ioTest() {
+	reader := strings.NewReader("Hello world!\n")
+	reader2 := io.TeeReader(reader, os.Stdout) //三通
+
+	buf := make([]byte, 512)
+	c, _ := reader2.Read(buf)
+	
+	io.WriteString(os.Stdout, string(bytes.ToUpper(buf[:c])))
+}
 
 func bufioTest() {
 	// 准备从标准输入读取数据
@@ -89,19 +109,6 @@ func bufioTest() {
 
 // IOTest : test all the io related pkg
 func IOTest() {
-	bufioTest()
+	// bufioTest()
+	ioTest()
 }
-
-// buf := bytes.NewBuffer(make([]byte, 0, 512))
-// buf.ReadFrom
-
-// io.LimitReader
-// io.Coyp
-
-// bufio
-
-// ioutil.ReadAll()
-
-// string.NewReader()
-
-// bytes.NewBuffer()
