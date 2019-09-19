@@ -14,7 +14,7 @@ func main() {
 	// sample.JSONTest()
 	// sample.ReflectTest()
 	// sample.ContainerTest()
-	sample.IOTest()
+	// sample.IOTest()
 	// sample.SyncTest()
 	// sample.TimeTest()
 	// sample.ChannelTest()
@@ -22,6 +22,6 @@ func main() {
 	// sample.SocketTest()
 	// sample.HTTPTest()
 	// sample.RPCTest()
-	// sample.MysqlTest()
+	sample.MysqlTest()
 	// sample.FileTest()
 }

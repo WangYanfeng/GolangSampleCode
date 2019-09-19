@@ -3,22 +3,22 @@ package sample
 /**
  * os package
  * 1. 文件是否存在
- * 		判断os.State() 返回的error：os.IsNotExist(err)
+ * 		判断os.State()/Open() 返回的error：os.IsNotExist(err)
  *
  * 2. 检查文件权限
- * 		判断os.Open(...) 返回的error：os.IsPermission(err)
+ * 		判断os.Open(...)/OpenFile() 返回的error：os.IsPermission(err)
  *
  * 3. 文件信息 FileInfo
  * 		os.State()
  * 		.Name() / .Size() / .Mode() / .IsDir() / .Sys() / .ModTime()
  *
- * 4. 文件读写
- *		os.Open() / os.OpenFile()
+ * 4. 打开文件
+ *		os.Open(filename) / os.OpenFile(filename, os.O_RDONLY, 0666)
  *		os.Create()
  *		os.Truncate()
  *
- * 5. 文件描述符 os.File
- * 		fp.Read() / os.ReadAtList() / ReadFull() / fp.Write() 
+ * 5. 文件描述符 os.File，实现io接口
+ * 		fp.Read() / fp.ReadAtList() / fp.ReadFull() / fp.Write()
  * 		fp.Seek()
  * 		fp.Sync() / fp.Close()
  *
@@ -29,7 +29,7 @@ package sample
  * 		os.Getwd()
  *
  * 7. 修改文件信息
- * 		os.Chown()
+ * 		os.Chown() / os.Chmod()
  * 		os.Chtimes()
  * 		os.Link() / os.Symlink() / os.Lstat() / os.Lchown()
  *
@@ -37,7 +37,7 @@ package sample
  * 1. 快写文件
  * 		ioutil.WriteFile()
  * 2. 快读文件
- * 		ioutil.ReadFile() / ioutil.ReadAll(fp)
+ * 		ioutil.ReadFile(filename) / ioutil.ReadAll(fp)
  * 3. 临时文件
  * 		ioutil.TempDir() / ioutil.TempFile()
  *
@@ -46,7 +46,9 @@ package sample
  */
 
 import (
+	"bufio"
 	"fmt"
+	"io"
 	"os"
 )
 
@@ -72,9 +74,20 @@ func readText(file string) {
 		return
 	}
 	defer fp.Close()
+	// fp.Read(b []byte)
 
 	// buffer读取
-	// 切片读取
+	reader := bufio.NewReader(fp)
+	for {
+		str, err := reader.ReadString('\n')
+		if err == io.EOF {
+			break
+		}
+		fmt.Printf(str)
+	}
+	// io.Copy(os.Stdout, reader)
+
+	// Reader() 切片读取
 }
 
 // FileTest : test file

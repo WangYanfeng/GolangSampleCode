@@ -34,7 +34,13 @@ package sample
  * 			reader.Text() / reader.Bytes() / reader.Buffer()
  * 			reader.Split() 自定义分割函数
  * 3. ioutil
+ * 			ioutil.ReadAll(reader) 读取所有数据。返回的buffer长度1536。
+ * 			ioutil.ReadFile(filename) / ioutil.WriteFile(filename, data, perm)
+ * 			ioutil.ReadDir() 读取目录中所有文件和目录
+ * 			ioutil.TempFile(dir, prefix) 在dir目录创建一个以prefix为前缀的临时文件。需手动删除。
+ * 			ioutil.TempDir(dir, prefix) 创建临时目录
  * 4. strings
+ * 		Bytes
  * 5. bytes
  *
  *
@@ -46,27 +52,39 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"strings"
 )
 
+func bytesReaderTest(){
+	// bytes.NewReader([]byte(""))
+}
+
+func ioutilTest() {
+	reader:=strings.NewReader("abcdefg")
+	buf, _ := ioutil.ReadAll(reader)
+	fmt.Println(len(buf), cap(buf))
+}
+
 func ioTest() {
 	reader := strings.NewReader("Hello world!\n")
 	reader2 := io.TeeReader(reader, os.Stdout) //三通
+	// io.Copy(write, read)
 
 	buf := make([]byte, 512)
 	c, _ := reader2.Read(buf)
-	
+
 	io.WriteString(os.Stdout, string(bytes.ToUpper(buf[:c])))
 }
 
 func bufioTest() {
 	// 准备从标准输入读取数据
 	inputReader := bufio.NewReader(os.Stdin)
-	outputWriter := bufio.NewWriter(os.Stdout)
+	// bufio.NewReaderSize(os.Stdin, 1024) 设置buffer长度
+	outputWriter := bufio.NewWriterSize(os.Stdout, 512)
 	scanner := bufio.NewScanner(os.Stdin)
 
-	// bufio.NewReaderSize(os.Stdin, 1024) 设置buffer长度
 	fmt.Printf("bufio.NewReader default buffer size: %d.\n", inputReader.Size())
 	fmt.Printf("bufio.NewWriter default buffer size: %d.\n", outputWriter.Size())
 
@@ -109,6 +127,7 @@ func bufioTest() {
 
 // IOTest : test all the io related pkg
 func IOTest() {
+	// ioTest()
 	// bufioTest()
-	ioTest()
+	ioutilTest()
 }
